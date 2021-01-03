@@ -13,8 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-
 import static com.sapient.credit.testdata.TestCreditDTOData.createCreditDTO;
 import static org.hamcrest.Matchers.empty;
 import static org.mockito.Mockito.doNothing;
@@ -58,7 +56,7 @@ public class CreditCardControllerTest {
   @Test
   void givenInvalidCreditCardNumberThenPostCreditCardRespondsWith400() throws Exception {
 
-    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber(toIntArray("4988357151")));
+    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber("4988357151"));
 
     //Then
     mockMvc.perform(post("/v1/credit-card")
@@ -70,7 +68,7 @@ public class CreditCardControllerTest {
   @Test
   void givenCreditCardNumberDigitsGreaterThan19ThenPostCreditCardRespondsWith400() throws Exception {
 
-    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber(toIntArray("16345680213348946820")));
+    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber("16345680213348946820"));
 
     //Then
     mockMvc.perform(post("/v1/credit-card")
@@ -82,7 +80,7 @@ public class CreditCardControllerTest {
   @Test
   void givenCreditCardNumberEqualTo0ThenPostCreditCardRespondsWith201() throws Exception {
 
-    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber(toIntArray("0")));
+    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber("0"));
 
     //Then
     mockMvc.perform(post("/v1/credit-card")
@@ -172,9 +170,9 @@ public class CreditCardControllerTest {
         empty()));
   }
 
-  private Integer[] toIntArray(String cardNumber) {
-    return Arrays.stream(cardNumber.split("")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-  }
+//  private Integer[] toIntArray(String cardNumber) {
+//    return Arrays.stream(cardNumber.split("")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
+//  }
 
   @Test
   void givenApplicationIsUpThenGetHealthRespondsWith200() throws Exception {
