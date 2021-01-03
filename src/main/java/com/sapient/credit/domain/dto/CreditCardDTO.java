@@ -1,4 +1,4 @@
-package com.sapient.credit.model.dto;
+package com.sapient.credit.domain.dto;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
