@@ -2,5 +2,20 @@ spring:
   application:
     name: credit-card
 
+  datasource:
+    url: jdbc:h2:mem:creditdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: validate
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: false
+        connection:
+          autocommit: true
+  flyway:
+    enabled: true
+    group: true
+
 server:
   port: 9000

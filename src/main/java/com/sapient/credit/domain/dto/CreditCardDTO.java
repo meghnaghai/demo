@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
 @Data
-public class CreditDTO {
+public class CreditCardDTO {
   @Parameter(
     description = "Given Name for credit card holder.",
     required = true)
@@ -22,7 +22,7 @@ public class CreditDTO {
   private String cardNumber;
 
   @Parameter(
-    description = "Credit Card limit. Default 0. ")
+    description = "Credit Card creditLimit. Default 0. ")
   @Positive
   private Double limit;
 }

@@ -1,4 +1,4 @@
-package com.sapient.credit.domain.dao;
+package com.sapient.credit.domain.entity;
 
 import lombok.Data;
 
@@ -12,16 +12,16 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "credit_card_details")
-public class CreditDAO {
+public class CreditCard {
   @Id
   @NotNull
-  private UUID referenceNumber;
+  private UUID requestIdentifier;
   @NotNull
   private String givenName;
   @NotNull
   private String cardNumber;
   @NotNull
-  private Double limit;
+  private Double creditLimit;
   @NotNull
   private Timestamp createdAt;
   private Timestamp modifiedAt;

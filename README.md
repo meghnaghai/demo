@@ -7,7 +7,7 @@ To run application run below command on local:
 ```./gradlew bootRun```
 
 The service will be up at below end point.
-```http://localhost:9000/v1/credit-card```
+```http://localhost:9000/v1/credit-cards```
 
 The swagger URl can be seen at 
 ```http://localhost:9000/swagger-ui.html```
