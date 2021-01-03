@@ -1,6 +1,7 @@
 package com.sapient.credit.rest;
 
 import com.sapient.credit.model.dto.CreditDTO;
+import com.sapient.credit.model.dto.GetCreditDTO;
 import com.sapient.credit.service.CreditCardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,11 @@ public class CreditCardController {
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<CreditDTO> getCreditCards(){
+  public GetCreditDTO getCreditCards(){
 
-    return Collections.emptyList();
+    return GetCreditDTO.builder()
+    .creditCards(Collections.emptyList())
+      .build();
   }
 
 }

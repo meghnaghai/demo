@@ -4,25 +4,23 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
 
 import javax.validation.constraints.*;
-import java.math.BigInteger;
 
 @Data
 public class CreditDTO {
   @Parameter(
     description = "Given Name for credit card holder.",
     required = true)
-  @NotEmpty
+  @NotBlank
 	private String givenName;
 
   @Parameter(
     description = "Credit Card Number upto 19 digits.",
     required = true)
-	@Size(max = 19)
-  @Positive
-	private BigInteger cardNumber;
+	@Size(max=19)
+	private Integer[] cardNumber;
 
   @Parameter(
     description = "Credit Card limit. Default 0. ")
-	@Min(value = 0L)
+	@Positive
 	private Double limit;
 }
