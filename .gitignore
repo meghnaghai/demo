@@ -1,8 +1,7 @@
-.idea/**
-.idea/**/sonarIssues.xml
-.idea/**/workspace.xml
-build/
-out/
-.gradle/**
+.idea
+.idea/*.xml
+build
+out
+.gradle
 *.log
 
