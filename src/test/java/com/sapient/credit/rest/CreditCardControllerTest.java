@@ -39,7 +39,7 @@ public class CreditCardControllerTest {
   private CreditCardService creditCardService;
 
   @Test
-  public void givenValidCreditCardNumberThenPostCreditCardRespondsWith201() throws Exception {
+  void givenValidCreditCardNumberThenPostCreditCardRespondsWith201() throws Exception {
 
     final CreditDTO creditDTO = createCreditDTO();
 
@@ -57,7 +57,7 @@ public class CreditCardControllerTest {
 
 
   @Test
-  public void givenInvalidCreditCardNumberThenPostCreditCardRespondsWith400() throws Exception {
+  void givenInvalidCreditCardNumberThenPostCreditCardRespondsWith400() throws Exception {
 
     final CreditDTO creditDTO = createCreditDTO(dto -> dto.setCardNumber(new BigInteger("4988357151")));
 
@@ -65,11 +65,11 @@ public class CreditCardControllerTest {
     mockMvc.perform(post("/v1/credit-card")
       .content(mapper.writeValueAsString(creditDTO))
       .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isCreated());
+      .andExpect(status().isBadRequest());
   }
 
   @Test
-  public void givenNoCreditCardLimitThenPostCreditCardRespondsWith201() throws Exception {
+  void givenNoCreditCardLimitThenPostCreditCardRespondsWith201() throws Exception {
 
     final CreditDTO creditDTO = createCreditDTO(dto -> dto.setLimit(null));
 
@@ -83,6 +83,42 @@ public class CreditCardControllerTest {
       .content(mapper.writeValueAsString(creditDTO))
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isCreated());
+  }
+
+  @Test
+  void givenNullGivenNameThenPostCreditCardRespondsWith400() throws Exception {
+
+    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setGivenName(null));
+
+    //Then
+    mockMvc.perform(post("/v1/credit-card")
+      .content(mapper.writeValueAsString(creditDTO))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void givenEmptyGivenNameThenPostCreditCardRespondsWith400() throws Exception {
+
+    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setGivenName(""));
+
+    //Then
+    mockMvc.perform(post("/v1/credit-card")
+      .content(mapper.writeValueAsString(creditDTO))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void givenSpaceGivenNameThenPostCreditCardRespondsWith400() throws Exception {
+
+    final CreditDTO creditDTO = createCreditDTO(dto -> dto.setGivenName(" "));
+
+    //Then
+    mockMvc.perform(post("/v1/credit-card")
+      .content(mapper.writeValueAsString(creditDTO))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest());
   }
 
 }
