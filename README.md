@@ -22,3 +22,13 @@ The swagger URl can be seen at
 
 * To see covergae, run below command:
 ```./gradlew jacocoTestReport```
+
+## Docker
+* To build image using docker file, use below command from root of project:
+```docker build -f Dockerfile -t credit .```
+
+* To run the image, use below command:
+```docker run -p 9000:9000 credit```
+
+And the service will be accessible at 
+```http://localhost:9000/swagger-ui.html```
