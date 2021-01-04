@@ -73,13 +73,11 @@ public class CreditCardControllerTest extends BaseTestConfig {
       .andExpect(status().isCreated());
   }
 
-  //TODO - implement
-  //  @Test
+  @Test
   void givenInvalidCreditCardNumberThenPostCreditCardRespondsWith400() throws Exception {
 
     final CreditCardDTO creditCardDTO = createCreditCardDTO(dto -> dto.setCardNumber("4988357151"));
 
-    //Then
     mockMvc.perform(post("/v1/credit-cards")
       .header("Idempotency-Key", requestIdentifier)
       .content(mapper.writeValueAsString(creditCardDTO))
@@ -130,6 +128,21 @@ public class CreditCardControllerTest extends BaseTestConfig {
       .content(mapper.writeValueAsString(creditCardDTO))
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isCreated());
+  }
+
+  @Test
+  void givenNullCreditCardNumberThenPostCreditCardRespondsWith400() throws Exception {
+
+    final CreditCardDTO creditCardDTO = createCreditCardDTO(dto -> dto.setCardNumber(null));
+
+    //Then
+    mockMvc.perform(post("/v1/credit-cards")
+      .header("Idempotency-Key", requestIdentifier)
+      .content(mapper.writeValueAsString(creditCardDTO))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest())
+      .andExpect(jsonPath("$.errors[0].field",
+        equalTo("cardNumber")));
   }
 
   @Test
@@ -291,10 +304,6 @@ public class CreditCardControllerTest extends BaseTestConfig {
       .andExpect(jsonPath("$.errors[0].field",
         equalTo("Idempotency-Key")));
   }
-
-//  private Integer[] toIntArray(String cardNumber) {
-//    return Arrays.stream(cardNumber.split("")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-//  }
 
   @Test
   void givenApplicationIsUpThenGetHealthRespondsWith200() throws Exception {
