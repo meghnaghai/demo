@@ -2,6 +2,7 @@ package com.sapient.credit.rest;
 
 import com.sapient.credit.domain.dto.ErrorDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,6 +48,38 @@ public class ErrorHandler {
 
     return ResponseEntity
       .status(HttpStatus.BAD_REQUEST)
+      .body(ErrorDTO.builder()
+        .errors(errors)
+        .build());
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  protected ResponseEntity<ErrorDTO> handleMissingRequestHeaderException(final DataIntegrityViolationException exception) {
+
+    final List<ErrorDTO.ApiErrors> errors = List.of(ErrorDTO.ApiErrors.builder()
+      .message(exception.getMessage())
+      .build());
+
+    log.error("Error: {}", errors);
+
+    return ResponseEntity
+      .status(HttpStatus.BAD_REQUEST)
+      .body(ErrorDTO.builder()
+        .errors(errors)
+        .build());
+  }
+
+  @ExceptionHandler(Exception.class)
+  protected ResponseEntity<ErrorDTO> handleMissingRequestHeaderException(final Exception exception) {
+
+    final List<ErrorDTO.ApiErrors> errors = List.of(ErrorDTO.ApiErrors.builder()
+      .message(exception.getMessage())
+      .build());
+
+    log.error("Error: {}", errors);
+
+    return ResponseEntity
+      .status(HttpStatus.INTERNAL_SERVER_ERROR)
       .body(ErrorDTO.builder()
         .errors(errors)
         .build());

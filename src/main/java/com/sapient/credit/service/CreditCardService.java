@@ -16,13 +16,16 @@ public class CreditCardService {
   private CreditCardDAO creditCardDAO;
   private CreditCardDAOMapper creditCardDAOMapper;
   private IdempotenceService idempotenceService;
+  private EncryptionService encryptionService;
 
   public CreditCardService(final CreditCardDAO creditCardDAO,
                            final CreditCardDAOMapper creditCardDAOMapper,
-                           final IdempotenceService idempotenceService) {
+                           final IdempotenceService idempotenceService,
+                           final EncryptionService encryptionService) {
     this.creditCardDAO = creditCardDAO;
     this.creditCardDAOMapper = creditCardDAOMapper;
     this.idempotenceService = idempotenceService;
+    this.encryptionService = encryptionService;
   }
 
   @Transactional
@@ -39,8 +42,12 @@ public class CreditCardService {
     creditCardDAO.addCreditCard(creditCard);
   }
 
-  @Transactional(readOnly = true)
   public List<CreditCard> readCreditCardData(int pageNumber, int pageSize) {
-    return creditCardDAO.getCreditCardDetails(pageNumber, pageSize);
+    List<CreditCard> creditCardList = creditCardDAO.getCreditCardDetails(pageNumber, pageSize);
+    creditCardList.forEach(creditCard -> {
+      String decryptStr = encryptionService.decrypt(creditCard.getCardNumber());
+      creditCard.setCardNumber(decryptStr);
+    });
+    return creditCardList;
   }
 }

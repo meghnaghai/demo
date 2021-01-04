@@ -21,7 +21,7 @@ class ValidCreditNumberValidator implements ConstraintValidator<ValidCreditNumbe
       || creditNumber.length() > 19) {
 
       context.disableDefaultConstraintViolation();
-      context.buildConstraintViolationWithTemplate("CreditCard Number allows upto 19 digits")
+      context.buildConstraintViolationWithTemplate("CreditCard Number allows upto 19 digits. No Characters.")
         .addConstraintViolation();
       return false;
     }

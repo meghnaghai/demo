@@ -19,3 +19,7 @@ spring:
 
 server:
   port: 9000
+
+credit-card:
+  encryption:
+    secret: SECRET!!!

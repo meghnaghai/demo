@@ -22,6 +22,7 @@ public class CreditCardDAO {
     creditCardRepository.save(creditCard);
   }
 
+  @Transactional(readOnly = true)
   public List<CreditCard> getCreditCardDetails(int pageNumber, int pageSize) {
 
     return creditCardRepository
