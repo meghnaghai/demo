@@ -16,9 +16,6 @@ import java.util.Base64;
 @Service
 @Slf4j
 public class EncryptionService {
-
-  private static final byte[] keyBytes = new byte[]{'0', '2', '3', '4', '5', '6', '7', '8', '9', '1', '2', '3', '4', '5', '6', '7'};// your key;
-  private static final byte[] ivBytes = new byte[]{'0', '4', '3', '6', '8', '0', '7', '9'};
   private final SecretKeySpec secretKey;
 
   public EncryptionService(@Value("credit-card.encryption.secret:dummyTest") String secret) {
@@ -35,9 +32,9 @@ public class EncryptionService {
       key = Arrays.copyOf(key, 16);
       return new SecretKeySpec(key, "AES");
     } catch (NoSuchAlgorithmException e) {
-      throw new EncryptionException("Error encrypting Credit Number", e);
+      throw new EncryptionException("Error initiating encryption module", e);
     } catch (UnsupportedEncodingException e) {
-      throw new EncryptionException("Error encrypting Credit Number", e);
+      throw new EncryptionException("Error initiating encryption module", e);
     }
   }
 
