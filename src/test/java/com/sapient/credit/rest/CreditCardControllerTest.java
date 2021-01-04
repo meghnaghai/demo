@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,6 +28,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -322,6 +324,24 @@ public class CreditCardControllerTest extends BaseTestConfig {
       .andExpect(status().isBadRequest())
       .andExpect(jsonPath("$.errors[0].field",
         equalTo("Idempotency-Key")));
+  }
+
+  @Test
+  void givenDuplicateCreditCardNumberThenPostCreditCardRespondsWith422() throws Exception {
+
+    final CreditCardDTO creditCardDTO = createCreditCardDTO();
+
+    //When
+    doThrow(new DataIntegrityViolationException("Unique key violation. Duplicate CardNumber"))
+      .when(creditCardService)
+      .createCreditCard(creditCardDTO, requestIdentifier);
+
+    //Then
+    mockMvc.perform(post("/v1/credit-cards")
+      .header("Idempotency-Key", requestIdentifier)
+      .content(mapper.writeValueAsString(creditCardDTO))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isUnprocessableEntity());
   }
 
   @Test

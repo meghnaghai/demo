@@ -63,7 +63,7 @@ public class ErrorHandler {
     log.error("Error: {}", errors);
 
     return ResponseEntity
-      .status(HttpStatus.BAD_REQUEST)
+      .status(HttpStatus.UNPROCESSABLE_ENTITY)
       .body(ErrorDTO.builder()
         .errors(errors)
         .build());

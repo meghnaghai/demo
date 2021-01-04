@@ -38,7 +38,6 @@ public class EncryptionService {
     }
   }
 
-  //TODO: look for another way
   public String encrypt(final String unencryptedData) {
 
     try {
