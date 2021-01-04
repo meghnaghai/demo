@@ -45,7 +45,8 @@ public class EncryptionService {
 
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
       cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-      String encryptedStr = Base64.getEncoder().encodeToString(cipher.doFinal(unencryptedData.trim().getBytes("UTF-8")));
+      String encryptedStr = Base64.getEncoder()
+        .encodeToString(cipher.doFinal(unencryptedData.trim().getBytes("UTF-8")));
 
       return encryptedStr;
 

@@ -165,6 +165,25 @@ public class CreditCardControllerTest extends BaseTestConfig {
   }
 
   @Test
+  void given0CreditCardLimitThenPostCreditCardRespondsWith201() throws Exception {
+
+    final CreditCardDTO creditCardDTO = createCreditCardDTO(dto -> dto.setLimit(0.00));
+
+
+    //When
+    doNothing()
+      .when(creditCardService)
+      .createCreditCard(creditCardDTO, requestIdentifier);
+
+    //Then
+    mockMvc.perform(post("/v1/credit-cards")
+      .header("Idempotency-Key", requestIdentifier)
+      .content(mapper.writeValueAsString(creditCardDTO))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isCreated());
+  }
+
+  @Test
   void givenNegativeCreditCardLimitThenPostCreditCardRespondsWith400() throws Exception {
 
     final CreditCardDTO creditCardDTO = createCreditCardDTO(dto -> dto.setLimit(-1000.00));

@@ -4,8 +4,8 @@ import com.sapient.credit.validator.ValidCreditNumber;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 @Data
 public class CreditCardDTO {
@@ -23,6 +23,6 @@ public class CreditCardDTO {
 
   @Parameter(
     description = "Credit Card creditLimit. Default 0. ")
-  @Positive
+  @DecimalMin(value = "0.00")
   private Double limit;
 }
